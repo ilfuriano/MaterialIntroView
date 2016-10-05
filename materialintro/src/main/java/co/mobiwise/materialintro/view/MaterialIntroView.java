@@ -418,16 +418,22 @@ public class MaterialIntroView extends RelativeLayout {
      */
     public void dismiss() {
         preferencesManager.setDisplayed(materialIntroViewId);
-        AnimationFactory.animateFadeOut(this, fadeAnimationDuration, new AnimationListener.OnAnimationEndListener() {
-            @Override
-            public void onAnimationEnd() {
-                setVisibility(GONE);
-                removeMaterialView();
-
-                if (materialIntroListener != null)
-                    materialIntroListener.onUserClicked(materialIntroViewId);
-            }
-        });
+        if(isFadeAnimationEnabled)
+            AnimationFactory.animateFadeOut(this, fadeAnimationDuration, new AnimationListener.OnAnimationEndListener() {
+                @Override
+                public void onAnimationEnd() {
+                    hide();
+                }
+            });
+        else
+            hide();
+    }
+    
+    private void hide() {
+        setVisibility(GONE);
+        removeMaterialView();
+        if (materialIntroListener != null)
+                materialIntroListener.onUserClicked(materialIntroViewId);
     }
 
     private void removeMaterialView(){
